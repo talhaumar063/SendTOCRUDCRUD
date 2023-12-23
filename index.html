@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS For Beginners</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Booking appointment</h1>
+      </header>
+  
+      <section class="container">
+        <form id="my-form" onsubmit="SaveToCRUDCRUD(event)">
+          <h1>User Details</h1>
+          <div class="msg"></div>
+          <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name">
+          </div>
+          <div>
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email">
+          </div>
+          <input class="btn" type="submit" value="Submit">
+        </form>
+  
+        <ul id="users"></ul>
+        <!-- <ul id="uid" class="items">
+          <li class="item" id="one">Item 1</li>
+          <li class="item" id="two">Item 2</li>
+          <li class="item" id="three">Item 3</li>
+        </ul> -->
+      </section>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js"></script>
+      <script>
+        function SaveToCRUDCRUD(event){
+            event.preventDefault();
+            const name = event.target.name.value;
+            const email = event.target.email.value;
+            const Myobj = {
+                name,
+                email
+            }
+            axios.post("https://crudcrud.com/api/252b4f2ac7ac40e7aee77f182326a58e/userdata", Myobj)
+            .then((response) => {
+                ShowUserOnScreen(response.data)
+                console.log(response);
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        }
+
+
+        function ShowUserOnScreen(Myobj) {
+            const item = document.createElement("li");
+        
+            item.innerHTML = `
+            ${Myobj.name} <span>${Myobj.email}</span>
+            <button class="delete-btn" onclick="removeTransaction(${Myobj.email})">Delete</button>
+            <button class="update-btn" onclick="updateTransaction('${Myobj.name}','${Myobj.email}')">Update</button>`;
+            const userList = document.querySelector('#users');
+            userList.appendChild(item);
+            // name.value='';
+            // email.value='';
+         }
+
+      </script>
+</body>
+</html>
